@@ -18,6 +18,8 @@ router.get("/:username", petMiddleware(), function (req, res, next) {
     pets = data.rows;
   });
 
+  console.log(pets);
+
   pool.query(sql_query.query.get_user, [username], (err, data) => {
     if (err) {
       res.next(err);

@@ -119,10 +119,11 @@
                         <input type="text" id="petname" placeholder="Pet Name" required="required" name="petname">
 
                         <label for="startDate">Start Date</label>
-                        <input type="date" id="startDate" required="required" autofocus="autofocus" name="startDate" min=<%= avails[i].s_date.toISOString().slice(0,10) %> max =<%= avails[i].e_date.toISOString().slice(0,10) %> >
+                        <input type="date" id="startDate" required="required" autofocus="autofocus" name="startDate">
 
                         <label for="endDate">End Date</label>
-                        <input type="date" id="endDate" required="required" autofocus="autofocus" name="endDate" min= <%= avails[i].s_date.toISOString().slice(0,10) %> max =<%= avails[i].e_date.toISOString().slice(0,10) %>>
+                        <!-- min= <%= avails[i].s_date.toISOString().slice(0,10) %> max =<%= avails[i].e_date.toISOString().slice(0,10) %> -->
+                        <input type="date" id="endDate" required="required" autofocus="autofocus" name="endDate" >
                     
                         <button type="submit" class="btn">Confirm Bid</button>
                         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
@@ -137,9 +138,7 @@
                       function closeForm() {
                         document.getElementById("myForm").style.display = "none";
                       }
-                      </script>
-
-                    </a>
+                    </script>
                   </td>
                 </tr>
                 <% } %>

@@ -8,11 +8,22 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-router.get("/", middleware(), function (req, res, next) {
+router.get("/", middleware(), function (req, res, mnext) {
+  const username = req.session.passport.user;
+
+  var pets = [];
+  pool.query(sql_query.query.get_pets, [username], (err, data) => {
+    pets = data.rows;
+  });
+
+  console.log(username);
+  console.log(pets);
+  
   pool.query(sql_query.query.browse, [], (err, data) => {
     console.log(data.rows);
     var username = req.session.passport.user;
-    res.render("browse", { avails: data.rows, username: username });
+    console.log(username);
+    res.render("browse", { avails: data.rows, username: username, pets: pets });
   });
 });
 
