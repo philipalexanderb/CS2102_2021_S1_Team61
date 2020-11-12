@@ -20,7 +20,7 @@ router.get("/", middleware(), function (req, res, next) {
   console.log(pets);
   
   pool.query(sql_query.query.browse, [], (err, data) => {
-    console.log(data.rows);
+    //console.log(data.rows);
     var username = req.session.passport.user;
     console.log(username);
     res.render("browse", { avails: data.rows, username: username, pets: pets });
@@ -61,29 +61,6 @@ router.get("/:id", function (req, res, next) {
     });
   }, 2000); 
 
-  // display_browsed_caretaker(username, bids, res);
-
-  // get_bid(username, bids).then(() => display_browsed_caretaker(username, bids, res));
 });
-
-//  async function get_bid(username, bids) {
-//   pool.query(sql_query.query.get_bid, [username], (err, data) => {
-//     bids = data.rows;
-//   });
-// }
-
-// async function display_browsed_caretaker(username, bids, res) {
-//   await(get_bid(username, bids));
-//   pool.query(sql_query.query.get_browsed_caretaker, [username], (err, data) => {
-//     console.log(data);
-//     res.render("browsed_caretaker", {
-//       username: data.rows[0].username,
-//       address: data.rows[0].address,
-//       first_name: data.rows[0].first_name,
-//       last_name: data.rows[0].last_name,
-//       bids: bids
-//      })
-//   });
-// }
 
 module.exports = router;

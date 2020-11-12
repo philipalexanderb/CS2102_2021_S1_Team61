@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Admin Profile</title>
+  <title>Pet Owner Profile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -25,14 +25,12 @@
           <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/history">History</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/auth/logout">Logout</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/browse">Browse</a>
-          </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/">About us</a>
-        </li>
+       
       </ul>
     </div>
   </nav>
@@ -43,6 +41,9 @@
       <img src="/images/girl2.jpg" alt="" class="d-block ui-w-100 rounded-circle">
       <div class="media-body ml-4">
         <h4 class="font-weight-bold mb-0"><%= firstName + " " + lastName%></h4>
+        <a href="/browse" class="btn btn-primary btn-md">Browse for Caretakers</a>&nbsp;
+        <a href="/add_pet" class="btn btn-primary btn-md">Add pet</a>&nbsp;
+        <a href="/history" class="btn btn-primary btn-md">History</a>&nbsp;
         <a href="/auth/logout" class="btn btn-primary btn-md">Logout</a>&nbsp;
       </div>
     </div>
@@ -57,67 +58,77 @@
             </tr>
             <tr>
               <td>Username:</td>
-              <td><%= userName %></td>
+              <td><%= username %></td>
             </tr>
             <tr>
               <td>Role:</td>
-              <td>Admin</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <br>
-    <h3>Active profile statistics</h3>
-    <div class="card mb-4">
-      <div class="table-responsive">
-        <table class="table card-table m-0">
-          <tbody>
-            <tr>
-              <th>Pets</th>
-              <th>Pet Owners</th>
-              <th>Part-time caretakers</th>
-              <th>Full-time caretakers </th>
+              <td>Pet Owner</td>
             </tr>
             <tr>
-              <td><%=numPets%></td>
-              <td><%=numPetowners%></td>
-              <td><%=numParttime%></td>
-              <td><%=numFulltime%></td>
+              <td>Address:</td>
+              <td>15 Hawthorn Lane</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <br>
-    <br>
-    <h3>Animal Type Statistics</h3>
     <div class="card mb-4">
-        <div class="table-responsive">
-          <table class="table card-table m-0">
-            <tbody>
-              <tr>
-                <th>Animal type</th>
-                <th>Total Pets</th>
-                <th>Total Petowners</th>
-                <th>Total Part-time caretakers</th>
-                <th>Total Full-time caretakers</th>
-              </tr>
-              <% for (var i=0; i < atypelength; i++) { %>
-              <tr>
-                <td><%=atypestats[i].a_type%></td>
-                <td><%=atypestats[i].pets%></td>
-                <td><%=atypestats[i].petowners%></td>
-                <td><%=atypestats[i].caretakers%></td>
-                <td><%=atypestats[i].a_type%></td>
-              </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>
+      <div class="table-responsive">
+        <table class="table card-table m-0">
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Status</th>
+            </tr>
+            <tr>
+              <td>Lucie Rodgers (01/01/2020)</td>
+              <td>Accepted</td>
+            </tr>
+            <tr>
+              <td>Mohsin Weeks (02/01/2020-05/01/2020)</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>Bailey Bevan (03/01/2002)</td>
+              <td>Rejected</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-  
+    </div>
+
+    <h2>Pets</h2>
+    <% if (pets.length > 0) { %>
+    <div class="card mb-4">
+      <div class="table-responsive">
+        <table class="table card-table m-0">
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Animal Type</th>
+              <!-- <th>Special Requirement</th> -->
+            </tr>
+            <% for(var i=0; i < pets.length; i++) { %>
+            <tr>
+              <td><%= pets[i].name %></td>
+              <td><%= pets[i].a_type %></td>
+              <!-- <td><%= pets[i].special_requirement %></td> -->
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <% } else { %>
+    <div class="card">
+      <div class="card-body">
+        You have no pets.
+      </div>
+    </div>
+    <br>
+    <% } %>
+
 
   </div>
   <!-- JQuery, Popper, JS Plugins -->

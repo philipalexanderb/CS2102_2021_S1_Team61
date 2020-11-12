@@ -28,9 +28,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/auth/logout">Logout</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/">About us</a>
-        </li>
+        
       </ul>
     </div>
   </nav>
@@ -95,12 +93,16 @@
           <tr>
             <th>Petowner's Name</th>
             <th>Animal's Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
             <th>Bid Amount</th>
           </tr>
           <% for(var i=0; i < bids.length; i++) { %>
           <tr>
             <td><%= bids[i].pouname %></td>
             <td><%= bids[i].name %></td>
+            <td><%= bids[i].s_date.toISOString().slice(0,10) %></td>
+            <td><%= bids[i].e_date.toISOString().slice(0,10) %></td>
             <td><%= bids[i].price %></td>
           </tr>
           <% } %>
