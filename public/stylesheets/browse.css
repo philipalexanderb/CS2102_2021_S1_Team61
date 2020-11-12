@@ -297,3 +297,17 @@ i.fa {
   .form-container .btn:hover, .open-button:hover {
 	opacity: 1;
   }
+
+  .open-button {
+	background-color: #8da47e;
+	border-color: #8da47e;
+	  color: white;
+	  padding: 3px 3px;
+	  border: none;
+	  cursor: pointer;
+	  opacity: 0.8;
+	  bottom: 23px;
+	  right: 28px;
+	width: 80px;
+	margin-bottom: 30px;
+}

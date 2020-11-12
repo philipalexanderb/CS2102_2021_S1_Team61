@@ -9,24 +9,58 @@ const pool = new Pool({
 });
 
 router.get("/", middleware(), function (req, res, next) {
+  const username = req.session.passport.user;
+
+  var pets = [];
+  pool.query(sql_query.query.get_pets, [username], (err, data) => {
+    pets = data.rows;
+  });
+
+  console.log(username);
+  console.log(pets);
+  
   pool.query(sql_query.query.browse, [], (err, data) => {
     //console.log(data.rows);
     var username = req.session.passport.user;
-    res.render("browse", { avails: data.rows, username: username });
+    console.log(username);
+    res.render("browse", { avails: data.rows, username: username, pets: pets });
   });
 });
 
 router.get("/:id", function (req, res, next) {
+  console.log(req);
   console.log(req.params.id);
-  pool.query(sql_query.query.get_browsed_caretaker, [req.params.id], (err, data) => {
-    //console.log(data);
-    res.render("browsed_caretaker", {
-      username: data.rows[0].username,
-      address: data.rows[0].address,
-      first_name: data.rows[0].first_name,
-      last_name: data.rows[0].last_name
-     })
+  const username = req.params.id;
+  const pousername = req.session.passport.user;
+
+  console.log("########### POUNAME FOR BROWSE ###################");
+  console.log(pousername);
+
+  console.log("########### USERNAME FOR BROWSE ###################");
+  console.log(username);
+
+  var bids = [];
+  pool.query(sql_query.query.get_bid, [username], (err, data) => {
+    bids = data.rows;
   });
+
+  console.log("###################### BIDS HERE #####################")
+  console.log(bids);
+
+  setTimeout(() => {
+    pool.query(sql_query.query.get_browsed_caretaker, [req.params.id], (err, data) => {
+      console.log(data);
+      res.render("browsed_caretaker", {
+        username: data.rows[0].username,
+        pousername: pousername,
+        address: data.rows[0].address,
+        first_name: data.rows[0].first_name,
+        last_name: data.rows[0].last_name,
+        bids: bids
+       })
+    });
+  }, 2000); 
+
 });
 
 module.exports = router;
