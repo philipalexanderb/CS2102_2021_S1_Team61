@@ -79,6 +79,9 @@
           <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/history">History</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/auth/logout">Logout</a>
         </li>
         <li class="nav-item">
@@ -94,8 +97,8 @@
       <img src="/images/girl.jpg" alt="" class="d-block ui-w-100 rounded-circle">
       <div class="media-body ml-4">
         <h4 class="font-weight-bold mb-0"><%= firstName + " " + lastName%></h4>
+        <a href="/history" class="btn btn-primary btn-sm">History</a>&nbsp;
         <a href="/auth/logout" class="btn btn-primary btn-sm">Logout</a>&nbsp;
-
       </div>
     </div>
 
@@ -176,6 +179,39 @@
     </div>
 
   </div>
+
+  <h2>Bids</h2>
+
+  <% if (bids.length > 0) { %>
+  <div class="card mb-4">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Animal Type</th>
+            <!-- <th>Special Requirement</th> -->
+          </tr>
+          <% for(var i=0; i < pets.length; i++) { %>
+          <tr>
+            <td><%= pets[i].name %></td>
+            <td><%= pets[i].a_type %></td>
+            <!-- <td><%= pets[i].special_requirement %></td> -->
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-body">
+      You have no pets.
+    </div>
+  </div>
+  <br>
+  <% } %>
+
   <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script type="text/javascript">

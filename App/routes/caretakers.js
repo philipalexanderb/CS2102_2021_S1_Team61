@@ -12,6 +12,14 @@ const pool = new Pool({
 // Profile page
 router.get("/:username", caretakerMiddleware(), function (req, res, next) {
   const username = req.params.username;
+
+  var bids = [];
+  pool.query(sql_query.query.get_bid, [username], (err, data) => {
+    bids = data.rows;
+  });
+
+  console.log(bids);
+
   pool.query(sql_query.query.get_user, [username], (err, data) => {
     if (err) {
       res.render("error", err);

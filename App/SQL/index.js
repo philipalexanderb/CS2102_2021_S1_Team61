@@ -30,9 +30,13 @@ sql.query = {
   // admin
   get_admin: "SELECT * FROM admin WHERE username=$1",
 
-  // register
+  // bids
+  add_bid_date:
+    "INSERT INTO bid_dates (s_date, e_date) VALUES ($1,$2) ON CONFLICT DO NOTHING",
   add_bid:
     "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6)",
+  get_bid:
+    "SELECT * FROM bids NATURAL JOIN pets NATURAL JOIN petowners NATURAL JOIN users WHERE ctuname=$1",
 
   // admin queries
   get_num_of_pets_within_month:

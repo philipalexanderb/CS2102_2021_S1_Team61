@@ -86,15 +86,79 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-body">
-        <h4>Current Pets:</h4>
-      </div>
+  <h2>Bids</h2>
+  <% if (bids.length > 0) { %>
+  <div class="card mb-4">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Petowner's Name</th>
+            <th>Animal's Name</th>
+            <th>Bid Amount</th>
+          </tr>
+          <% for(var i=0; i < bids.length; i++) { %>
+          <tr>
+            <td><%= bids[i].pouname %></td>
+            <td><%= bids[i].name %></td>
+            <td><%= bids[i].price %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-body">
+      There are no bids.
+    </div>
+  </div>
+  <br>
+  <% } %>
 
+  <td style="width: 20%;">
+    <button class="open-button" onclick="openBid()">Place Bid</button>
 
+    <div class="form-popup" id="myForm" name="bid_form">
+      <form class="form-container" action="/bid"  method="post" id = "form<%= i %>"> 
+        <h1>Place Bid</h1>
+        <input type="hidden" id="pousername" name="pousername" value=<%= pousername %>>
+        <!-- <input type="hidden" id="hidden" + <%= i %> name="username<%= i %>" value=<%= username %>> -->
+        <input type="hidden" id="username" name="username" value=<%= username %>>
+
+        <label for="bid amount"><b>Amount</b></label>
+        <input type="text" id="amount" placeholder="Bidding Amount" required="required" name="amount">
+    
+        <label for="pet name"><b>Pet Name</b></label>
+        <input type="text" id="petname" placeholder="Pet Name" required="required" name="petname">
+
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" required="required" autofocus="autofocus" name="startDate">
+
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" required="required" autofocus="autofocus" name="endDate" >
+        
+        <button type="submit" form = "form<%= i %>" class="btn" value="Submit">Confirm Bid</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+
+        <script>
+          function openBid() {
+            document.getElementById("myForm").style.display = "block";
+          }
+
+          function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+          }
+        </script>
+
+      </form>
+    </div>   
+  </td>
+  <br>
 
   </div>
+
 
   <!-- JQuery, Popper, JS Plugins -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
