@@ -20,7 +20,7 @@ router.get("/", middleware(), function (req, res, mnext) {
   console.log(pets);
   
   pool.query(sql_query.query.browse, [], (err, data) => {
-    console.log(data.rows);
+    //console.log(data.rows);
     var username = req.session.passport.user;
     console.log(username);
     res.render("browse", { avails: data.rows, username: username, pets: pets });
@@ -30,7 +30,7 @@ router.get("/", middleware(), function (req, res, mnext) {
 router.get("/:id", function (req, res, next) {
   console.log(req.params.id);
   pool.query(sql_query.query.get_browsed_caretaker, [req.params.id], (err, data) => {
-    console.log(data);
+    //console.log(data);
     res.render("browsed_caretaker", {
       username: data.rows[0].username,
       address: data.rows[0].address,
