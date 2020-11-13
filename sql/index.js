@@ -91,7 +91,8 @@ sql.query = {
     "SELECT *, CASE WHEN is_win=TRUE then 'ACCEPTED' WHEN is_win=FALSE AND s_date > now() THEN 'PENDING' ELSE 'REJECTED' END AS status FROM bids WHERE pouname = $1",
 
   apply_for_leave:
-    "INSERT INTO takes_leave (ctuname, s_date, e_date) VALUES ($1, $2, $3);"
+    "INSERT INTO takes_leave (ctuname, s_date, e_date) SELECT $1, $2, $3 WHERE NOT EXISTS (SELECT 1 FROM bids WHERE bids.ctuname=CAST($1 AS varchar) AND bids.is_win=TRUE AND bids.s_date<=$2 AND bids.e_date>=$3);"
+
 };
 
 module.exports = sql;
