@@ -44,22 +44,29 @@ router.get("/:id", function (req, res, next) {
     // get other data for caretaker
     pool.query(sql_query.query.get_browsed_caretaker, [req.params.id], (err, data) => {
 
-      // convert timezone
-      var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-      for (var i = 0; i < bids_res.rows.length; i++) {
-        bids_res.rows[i].s_date = (new Date(bids_res.rows[i].s_date - tzoffset))
-        bids_res.rows[i].e_date = (new Date(bids_res.rows[i].e_date - tzoffset))
-      }
+      pool.query(sql_query.query.get_review, [req.params.id], (err, data1) => {
 
-      console.log(bids_res.rows);
-      res.render("browsed_caretaker", {
-        username: data.rows[0].username,
-        pousername: pousername,
-        address: data.rows[0].address,
-        first_name: data.rows[0].first_name,
-        last_name: data.rows[0].last_name,
-        bids: bids_res.rows
-      })
+        // convert timezone
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        for (var i = 0; i < bids_res.rows.length; i++) {
+          bids_res.rows[i].s_date = (new Date(bids_res.rows[i].s_date - tzoffset))
+          bids_res.rows[i].e_date = (new Date(bids_res.rows[i].e_date - tzoffset))
+        }
+  
+        console.log(bids_res.rows);
+        console.log("##################### REVIEW HERE #####################");
+        console.log(data1.rows);
+        res.render("browsed_caretaker", {
+          username: data.rows[0].username,
+          pousername: pousername,
+          address: data.rows[0].address,
+          first_name: data.rows[0].first_name,
+          last_name: data.rows[0].last_name,
+          bids: bids_res.rows,
+          reviews: data1.rows
+        })
+
+      });
     });
   });
 });

@@ -33,6 +33,12 @@ sql.query = {
   get_admin: "SELECT * FROM admin WHERE username=$1",
 
   // bids
+  get_review:
+    "SELECT first_name, last_name, review, rating FROM bids JOIN users ON users.username = bids.pouname WHERE ctuname=$1 AND (review IS NOT NULL OR rating IS NOT NULL)",
+  add_review:
+    "UPDATE bids SET rating=$6, review=$7 WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5",
+  get_successful_bid:
+    "SELECT * FROM bids JOIN users ON bids.ctuname = users.username WHERE pouname=$1 AND is_win = TRUE",
   add_bid_date:
     "INSERT INTO bid_dates (s_date, e_date) VALUES ($1,$2) ON CONFLICT DO NOTHING",
   add_bid:

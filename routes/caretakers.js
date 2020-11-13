@@ -62,18 +62,6 @@ router.get("/:username/accept/:s_date/:e_date/:pouname/:name/:price", caretakerM
   const name = req.params.name;
   const price = req.params.price;
 
-  // s_date = (new Date(new Date(s_date) + tzoffset));
-  // console.log(s_date);
-  // e_date = (new Date(new Date(e_date + tzoffset));
-
-  // pool.query(sql_query.query.get_caretaker, [username], (err, data) => {
-  //   if (err) {
-  //     return next(err);
-  //   } else {
-  //     pool.query(sql_query.query.add_bid_date, [s_date, e_date]);
-  //   }
-  // });
-
   console.log('reach here')
 
   // pool.query(sql_query.query.add_bid_date, [s_date, e_date]);
