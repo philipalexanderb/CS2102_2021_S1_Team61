@@ -32,13 +32,24 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
           bids_res.rows[i].e_date = (new Date(bids_res.rows[i].e_date - tzoffset))
         }
 
-        res.render("caretakers", {
-          firstName: firstName,
-          lastName: lastName,
-          userName: username,
-          salary: salary,
-          bids: bids_res.rows,
+        pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
+          role = "Part-Time Caretaker";
+          console.log(fulltime_data.rows[0].is_fulltime);
+          
+          if (fulltime_data.rows[0].is_fulltime) {role = "Full-Time Caretaker"};
+
+          res.render("caretakers", {
+            firstName: firstName,
+            lastName: lastName,
+            userName: username,
+            salary: salary,
+            bids: bids_res.rows,
+            role: role
+          });
+
         });
+
+        
       }
     });
 

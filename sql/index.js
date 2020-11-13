@@ -6,6 +6,8 @@ sql.query = {
     "INSERT INTO users (username, password, first_name, last_name) VALUES ($1,$2,$3,$4)",
   add_petowner: "INSERT INTO petowners (username) VALUES ($1)",
   add_caretaker: "INSERT INTO caretakers (username) VALUES ($1)",
+  add_fulltime_caretaker: "INSERT INTO fulltime (username) VALUES ($1)",
+  add_parttime_caretaker: "INSERT INTO parttime (username) VALUES ($1)",
   add_admin: "INSERT INTO admin (username) VALUES ($1)",
   // login
   get_user: "SELECT * FROM users WHERE username=$1",
@@ -91,7 +93,14 @@ sql.query = {
     "SELECT *, CASE WHEN is_win=TRUE then 'ACCEPTED' WHEN is_win=FALSE AND s_date > now() THEN 'PENDING' ELSE 'REJECTED' END AS status FROM bids WHERE pouname = $1",
 
   apply_for_leave:
-    "INSERT INTO takes_leave (ctuname, s_date, e_date) SELECT $1, $2, $3 WHERE NOT EXISTS (SELECT 1 FROM bids WHERE bids.ctuname=CAST($1 AS varchar) AND bids.is_win=TRUE AND bids.s_date<=$2 AND bids.e_date>=$3);"
+    "INSERT INTO takes_leave (ctuname, s_date, e_date) SELECT $1, $2, $3 WHERE NOT EXISTS (SELECT 1 FROM bids WHERE bids.ctuname=CAST($1 AS varchar) AND bids.is_win=TRUE AND bids.s_date<=$2 AND bids.e_date>=$3);",
+  
+  check_fulltime:
+    "SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = $1) THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;"
+
+    // SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = 'a') THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;
+
+  
 
 };
 

@@ -35,9 +35,24 @@ router.post("/register", antiMiddleware(), function (req, res, next) {
   ]);
   if (role == "petowner") {
     pool.query(sql_query.query.add_petowner, [username]);
-  } else if (role == "caretaker") {
+  } else {
     pool.query(sql_query.query.add_caretaker, [username]);
+
+    setTimeout(() => {
+      console.log('timeout');
+      if (role == "m") { 
+        // dont remove this yet
+      } else if (role == "full-time caretaker") {
+        pool.query(sql_query.query.add_fulltime_caretaker, [username]);
+      } else if (role == "part-time caretaker") {
+        pool.query(sql_query.query.add_parttime_caretaker, [username]);
+      }
+
+    }, 2000);
+
+  
   }
+  
   res.redirect("/auth/thankyou");
 });
 
