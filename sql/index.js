@@ -39,8 +39,11 @@ sql.query = {
     "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6)",
   get_bid:
     "SELECT * FROM bids NATURAL JOIN pets NATURAL JOIN petowners NATURAL JOIN users WHERE ctuname=$1 AND is_win = FALSE",
+
   update_bid:
-    "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT(pouname, ctuname, name, s_date, e_date) DO UPDATE SET is_win = TRUE WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5",
+    "UPDATE bids SET is_win = TRUE WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5 AND bids.price=$6",
+  // update_bid:
+  //   "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT(pouname, ctuname, name, s_date, e_date) DO UPDATE SET is_win = TRUE WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5",
 
   // admin queries
   get_num_of_pets_within_month:
