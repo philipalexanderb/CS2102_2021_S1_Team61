@@ -20,6 +20,7 @@ const petownersRouter = require("./routes/petowners");
 const caretakersRouter = require("./routes/caretakers");
 const petsRouter = require("./routes/pets");
 const adminRouter = require("./routes/admin");
+const leaveRouter = require("./routes/apply_leave");
 
 // authentication setup
 require("./auth").init(app);
@@ -57,6 +58,7 @@ app.use("/caretakers", caretakersRouter);
 app.use("/admin", adminRouter);
 app.use("/pets", petsRouter);
 app.use("/", indexRouter);
+app.use("/apply_leave", leaveRouter);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -89,6 +89,9 @@ sql.query = {
 
   get_petowner_history:
     "SELECT *, CASE WHEN is_win=TRUE then 'ACCEPTED' WHEN is_win=FALSE AND s_date > now() THEN 'PENDING' ELSE 'REJECTED' END AS status FROM bids WHERE pouname = $1",
+
+  apply_for_leave:
+    "INSERT INTO takes_leave (ctuname, s_date, e_date) VALUES ($1, $2, $3);"
 };
 
 module.exports = sql;
