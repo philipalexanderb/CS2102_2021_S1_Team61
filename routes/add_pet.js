@@ -20,6 +20,8 @@ router.post("/", function (req, res, next) {
   var pet_name = req.body.inputName;
   var animal_type = req.body.inputAnimalType;
   var special_req = req.body.inputSpecialRequirement;
+
+  console.log(username);
   console.log(req.body.inputName);
   console.log(req.body.inputAnimalType);
   console.log(req.body.inputSpecialRequirement);

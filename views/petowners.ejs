@@ -45,8 +45,6 @@
         <a href="/add_pet" class="btn btn-primary btn-md">Add pet</a>&nbsp;
         <a href="/history" class="btn btn-primary btn-md">History</a>&nbsp;
         <a href="/auth/logout" class="btn btn-primary btn-md">Logout</a>&nbsp;
-        <a href=<%= "/pets/"+username+"/test_petname" %> class="btn btn-default btn-md">Go to pets page (remove
-          later)</a>&nbsp;
       </div>
     </div>
 
@@ -101,7 +99,6 @@
     </div>
 
     <h2>Pets</h2>
-
     <% if (pets.length > 0) { %>
     <div class="card mb-4">
       <div class="table-responsive">
@@ -115,8 +112,8 @@
             <% for(var i=0; i < pets.length; i++) { %>
             <tr>
               <td><%= pets[i].name %></td>
-              <td><%= pets[i].animal_type %></td>
-              <td><%= pets[i].special_requirement %></td>
+              <td><%= pets[i].a_type %></td>
+              <td><%= pets[i].sp_req %></td> <!-- special requirement-->
             </tr>
             <% } %>
           </tbody>
@@ -129,10 +126,9 @@
         You have no pets.
       </div>
     </div>
+    <br>
     <% } %>
 
-
-    <a href="/browse" class="btn btn-primary btn-sm">Place Bid</a>&nbsp;
 
   </div>
   <!-- JQuery, Popper, JS Plugins -->

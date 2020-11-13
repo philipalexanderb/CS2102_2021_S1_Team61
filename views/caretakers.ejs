@@ -61,6 +61,28 @@
     .fa-check {
       color: #e9bbb5;
     }
+
+    .btn_accept {
+      background-color: rgb(50, 144, 53);
+      color: white;
+      padding: 4px 5px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom:7px;
+      opacity: 0.8;
+    }
+
+    .btn_reject {
+      background-color: rgb(171, 46, 46);
+      color: white;
+      padding: 4px 5px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom:7px;
+      opacity: 0.8;
+    }
   </style>
 </head>
 
@@ -177,7 +199,51 @@
       </div>
     </div>
 
+  <h2>Bids</h2>
+  <% if (bids.length > 0) { %>
+  <div class="card mb-4">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Petowner's Name</th>
+            <th>Animal's Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Bid Amount</th>
+            <th>Accept/ Reject</th>
+          </tr>
+          <% for(var i=0; i < bids.length; i++) { %>
+          <tr>
+            <td><%= bids[i].pouname %></td>
+            <td><%= bids[i].name %></td>
+            <td><%= bids[i].s_date.toISOString().slice(0,10) %></td>
+            <td><%= bids[i].e_date.toISOString().slice(0,10) %></td>
+            <td><%= bids[i].price %></td>
+            <td>
+              <a href="/caretakers/<%= userName %>/accept/<%= bids[i].s_date.toISOString().slice(0,10) %>/<%= bids[i].e_date.toISOString().slice(0,10) %>/<%= bids[i].pouname %>/<%= bids[i].name %>/<%= bids[i].price %>"
+                class="btn_accept">Accept</a>
+              <!-- <a href="/caretakers/<%= userName %>/reject/<%= bids[i].s_date %>/<%= bids[i].e_date %>/<%= bids[i].pouname %>/<%= bids[i].name %>"
+                class="btn_reject">Reject</a> -->
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
   </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-body">
+      There are no bids.
+    </div>
+  </div>
+  <br>
+  <% } %>
+
+  </div>
+
+
   <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script type="text/javascript">

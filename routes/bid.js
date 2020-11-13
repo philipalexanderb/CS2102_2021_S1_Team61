@@ -30,8 +30,20 @@ router.post("/", function (req, res, next) {
     var e_date = parse(req.body.endDate);
     console.log(e_date);
     var careTakerUsername = req.body.username;
-    console.log("#########UserName##########");
+    console.log("#########Caretaker UserName##########");
     console.log(careTakerUsername);
+    console.log("#########Pet Owener UserName##########");
+    console.log(pousername);
+    pool.query(sql_query.query.get_caretaker, [careTakerUsername], (err, data) => {
+      if (err) {
+          return next(err);
+      } else {
+          pool.query(sql_query.query.add_bid_date, [
+              s_date,
+              e_date,
+            ]);
+      }
+    });
     pool.query(sql_query.query.get_caretaker, [careTakerUsername], (err, data) => {
         if (err) {
             return next(err);
@@ -46,7 +58,7 @@ router.post("/", function (req, res, next) {
               ]);
         }
     });
-    return res.redirect("/petowners/" + pousername);
+    return res.redirect("/browse/" + careTakerUsername);
   });
 
 module.exports = router;
