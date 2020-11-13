@@ -16,7 +16,7 @@ router.get("/", middleware(), function (req, res, next) {
   //   pets = data.rows;
   //   console.log(data.rows);
   // });
-  
+
   var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
   pool.query(sql_query.query.browse, [], (err, data) => {
     var username = req.session.passport.user;
@@ -43,6 +43,15 @@ router.get("/:id", function (req, res, next) {
   pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
     // get other data for caretaker
     pool.query(sql_query.query.get_browsed_caretaker, [req.params.id], (err, data) => {
+
+      // convert timezone
+      var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+      for (var i = 0; i < bids_res.rows.length; i++) {
+        bids_res.rows[i].s_date = (new Date(bids_res.rows[i].s_date - tzoffset))
+        bids_res.rows[i].e_date = (new Date(bids_res.rows[i].e_date - tzoffset))
+      }
+
+      console.log(bids_res.rows);
       res.render("browsed_caretaker", {
         username: data.rows[0].username,
         pousername: pousername,
@@ -50,7 +59,7 @@ router.get("/:id", function (req, res, next) {
         first_name: data.rows[0].first_name,
         last_name: data.rows[0].last_name,
         bids: bids_res.rows
-       })
+      })
     });
   });
 });
