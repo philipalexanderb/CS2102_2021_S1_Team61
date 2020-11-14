@@ -39,6 +39,19 @@ router.get("/:id", function (req, res, next) {
   const username = req.params.id;
   const pousername = req.session.passport.user;
 
+  var avails = [];
+  pool.query(sql_query.query.get_availability, [username], (err, data) => {
+    console.log(data.rows);
+    avails = data.rows;
+  });
+
+  var role = "Part-Time Caretaker";
+  pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
+    if (fulltime_data.rows[0].is_fulltime) {
+      role = "Full-Time Caretaker";
+    };
+  });
+
   // get bids for a caretaker
   pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
     // get other data for caretaker
@@ -63,7 +76,9 @@ router.get("/:id", function (req, res, next) {
           first_name: data.rows[0].first_name,
           last_name: data.rows[0].last_name,
           bids: bids_res.rows,
-          reviews: data1.rows
+          reviews: data1.rows,
+          avails: avails,
+          role: role
         })
 
       });

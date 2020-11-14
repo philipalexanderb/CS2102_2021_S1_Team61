@@ -132,17 +132,15 @@
               <td><%= userName%></td>
             </tr>
             <tr>
-              <td>Registered:</td>
-              <td>01/01/2017</td>
-            </tr>
-            <tr>
               <td>Role:</td>
-              <td>Full-Time Caretaker</td>
+              <td><%= role%></td>
             </tr>
-            <tr>
-              <td>Status:</td>
-              <td>Active</td>
-            </tr>
+            <% if(role == "Full-Time Caretaker"){ %>
+              <tr>
+                <td>Status:</td>
+                <td>Active</td>
+              </tr>
+            <% } %>
             <tr>
               <td>Animals:</td>
               <td>Dogs, Rabbits, Cats</td>
@@ -158,13 +156,13 @@
         <div class="d-flex col-md align-items-center">
           <a href="javascript:void(0)" class="card-body d-block text-body">
             <div class="text-muted small line-height-1">Average Rating</div>
-            <div class="text-xlarge">4.5</div>
+            <div class="text-xlarge"><%= rating%></div>
           </a>
         </div>
         <div class="d-flex col-md align-items-center">
           <a href="javascript:void(0)" class="card-body d-block text-body">
             <div class="text-muted small line-height-1">Current month's total pet days</div>
-            <div class="text-xlarge">100</div>
+            <div class="text-xlarge"><%= pet_days%></div>
           </a>
         </div>
         <div class="d-flex col-md align-items-center">
@@ -175,28 +173,37 @@
         </div>
       </div>
       <hr class="border-light m-0">
-      <div class="table-responsive">
-        <table class="table card-table m-0">
-          <tbody>
-            <tr>
-              <th>Availability</th>
-              <th>Booked</th>
-            </tr>
-            <tr>
-              <td>01/01/2020</td>
-              <td><span class="fa fa-check"></span></td>
-            </tr>
-            <tr>
-              <td>02/01/2020</td>
-              <td><span class="fa fa-check"></span></td>
-            </tr>
-            <tr>
-              <td>03/01/2002</td>
-              <td><span class="fa fa-times text-light"></span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <% if(role == "Part-Time Caretaker"){ %>
+        <% if (avails.length > 0) { %>
+          <div class="card mb-4">
+            <div class="table-responsive">
+              <table class="table card-table m-0">
+                <tbody>
+                  <tr>
+                    <th>Availability</th>
+                    <th>Booked</th>
+                  </tr>
+                  <% for(var i=0; i < avails.length; i++) { %>
+                  <tr>
+                    <td><%= avails[i].avail_date.toISOString().slice(0,10) %></td>
+                    <td><span class="fa fa-times text-light"></span></td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% } else { %>
+            <div class="card">
+              <div class="card-body">
+                No availability has been specified.
+              </div>
+            </div>
+            <br>
+        <% } %>
+
+      <% } %>
+      
     </div>
 
   <h2>Bids</h2>

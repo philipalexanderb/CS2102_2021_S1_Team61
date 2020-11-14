@@ -51,17 +51,7 @@ router.post("/", function (req, res, next) {
       return next(err);
     }
   });
-  // pool.query(sql_query.query.get_caretaker, [username], (err, data) => {
-  //     if (err) {
-  //         return next(err);
-  //     } else {
-  //         pool.query(sql_query.query.apply_for_leave, [
-  //             username,
-  //             s_date,
-  //             e_date
-  //           ]);
-  //     }
-  // });
+
   return res.redirect("/");
 });
 
