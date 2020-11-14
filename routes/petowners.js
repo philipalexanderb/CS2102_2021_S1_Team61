@@ -33,6 +33,7 @@ router.get("/:username", petMiddleware(), function (req, res, next) {
 
     pool.query(sql_query.query.get_successful_bid, [username], (err1, data1) => {
       successful_bids = data1.rows;
+      console.log(successful_bids);
 
       // convert timezone
       var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds

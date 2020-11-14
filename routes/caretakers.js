@@ -17,8 +17,20 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
   var avails = [];
   pool.query(sql_query.query.get_availability, [username], (err, data) => {
     console.log(data.rows);
+    var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    for (var i = 0; i < data.rows.length; i++) {
+      data.rows[i].s_date = new Date(
+        data.rows[i].s_date - tzoffset
+      );
+      data.rows[i].e_date = new Date(
+        data.rows[i].e_date - tzoffset
+      );
+    }
+    console.log(data.rows);
     avails = data.rows;
   });
+
+
 
   var rating = "No rating yet."
   pool.query(sql_query.query.get_rating, [username], (err, data) => {
@@ -63,27 +75,44 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
             );
           }
 
+          
+
           pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
-            role = "Part-Time Caretaker";
-            console.log(fulltime_data.rows[0].is_fulltime);
+            pool.query(sql_query.query.get_availability, [username], (err, avail_data) => {
+              console.log(data.rows);
+              var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+              for (var i = 0; i < avail_data.rows.length; i++) {
+                avail_data.rows[i].s_date = new Date(
+                  avail_data.rows[i].s_date - tzoffset
+                );
+                avail_data.rows[i].e_date = new Date(
+                  avail_data.rows[i].e_date - tzoffset
+                );
+              }
+              console.log(avail_data.rows);
 
-            if (fulltime_data.rows[0].is_fulltime) {
-              role = "Full-Time Caretaker";
-              // document.getElementById("availability_table").style.visibility="hidden";
-            };
+              role = "Part-Time Caretaker";
+              console.log(fulltime_data.rows[0].is_fulltime);
 
-            res.render("caretakers", {
-              firstName: firstName,
-              lastName: lastName,
-              userName: username,
-              salary: salary,
-              bids: bids_res.rows,
-              role: role,
-              avails:avails,
-              rating: rating,
-              pet_days: pet_days,
-              reviews: data1.rows
+              if (fulltime_data.rows[0].is_fulltime) {
+                role = "Full-Time Caretaker";
+                // document.getElementById("availability_table").style.visibility="hidden";
+              };
+
+              res.render("caretakers", {
+                firstName: firstName,
+                lastName: lastName,
+                userName: username,
+                salary: salary,
+                bids: bids_res.rows,
+                role: role,
+                avails:avail_data.rows,
+                rating: rating,
+                pet_days: pet_days,
+                reviews: data1.rows
+              });
             });
+            
 
           });
 
