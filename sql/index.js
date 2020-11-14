@@ -104,7 +104,9 @@ sql.query = {
   check_fulltime:
     "SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = $1) THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;",
 
-  get_availability: "SELECT * FROM  availability WHERE username=$1;"
+  get_availability: "SELECT * FROM  availability WHERE username=$1;",
+
+  get_rating:"SELECT AVG(rating) FROM bids WHERE is_win = true AND ctuname=$1;",
 
 
   
