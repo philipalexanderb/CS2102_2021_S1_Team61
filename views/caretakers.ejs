@@ -5,7 +5,9 @@
   <meta charset="utf-8">
   <title>Caretaker Profile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/custom_style.css">
   <style type="text/css">
     body {
       margin-top: 0px;
@@ -42,6 +44,7 @@
 
     .text-xlarge {
       font-size: 170% !important;
+      color: #000000;
     }
 
     .btn-primary {
@@ -51,6 +54,7 @@
 
     .btn-default {
       border-color: #e9bbb5;
+      color: #000000;
     }
 
     .btn:hover {
@@ -99,6 +103,9 @@
       <ul class="navbar-nav">
         <li class="nav-item ">
           <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/caretakers/<%= userName %>">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/history">History</a>
@@ -244,6 +251,37 @@
   <div class="card">
     <div class="card-body">
       There are no bids.
+    </div>
+  </div>
+  <br>
+  <% } %>
+
+  <h2>Your Reviews</h2>
+  <% if (reviews.length > 0) { %>
+  <div class="card mb-4">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Review</th>
+            <th>Rating</th>
+          </tr>
+          <% for(var i=0; i < reviews.length; i++) { %>
+          <tr>
+            <td><%= reviews[i].first_name %> <%= reviews[i].last_name %></td>
+            <td><%= reviews[i].review %></td>
+            <td><%= reviews[i].rating %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-body">
+      There are no reviews.
     </div>
   </div>
   <br>
