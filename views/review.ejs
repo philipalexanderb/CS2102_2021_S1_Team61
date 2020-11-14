@@ -12,7 +12,7 @@
 
 <body class="text-center">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-
+  
   <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #bebebe;">
     <a class="navbar-brand" href="/">PCS</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -25,12 +25,12 @@
           <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/auth/register">Register</a>
+          <a class="nav-link" href="/history">History</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/auth/login">Login</a>
+          <a class="nav-link" href="/auth/logout">Logout</a>
         </li>
-  
+       
       </ul>
     </div>
   </nav>
@@ -38,34 +38,28 @@
   <div class="container bootdey flex-grow-1 container-p-y">
 
     <div class="card mb-4">
-      <form action="/bid/review" method="post">
+      <form>
         <input type="hidden" id="pousername" name="pousername" value=<%= username %>>
         <input type="hidden" id="ctuname" name="ctuname" value=<%= ctuname %>>
         <input type="hidden" id="s_date" name="s_date" value=<%= s_date %>>
         <input type="hidden" id="e_date" name="e_date" value=<%= e_date %>>
         <input type="hidden" id="name" name="name" value=<%= name %>>
         <h1 class="h3 mb-3 font-weight-normal">You are giving review for <%= fn %> <%= ln %></h1>
-        <div class="block">
-          <label for="rating">Rating:</label>
-          <br>
-            <select id="rating" name="rating" required="required">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          <br>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Rating</label>
+          <select id="rating" name="rating" required="required" class="form-control">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
         </div>
-        <div class="block">
-          <label for="Review">Review</label>
-          <br>
-          <textarea type="text" id="review" placeholder="Type your review" required="required" name="review" cols="40" rows="5"></textarea>
-          <br>
+        <div class="form-group">
+          <label for="review">Review</label>
+          <textarea class="form-control" id="review" rows="3" placeholder="Type your review here"></textarea>
         </div>
-
-        <button type="submit">Submit</button>
-
+        <button type="submit" class="btn btn-primary">Submit</button>
         <p class="mt-5 mb-3 text-muted">&copy; PCS 2020</p>
       </form>
     </div>
