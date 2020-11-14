@@ -135,10 +135,12 @@
               <td>Role:</td>
               <td><%= role%></td>
             </tr>
-            <tr>
-              <td>Status:</td>
-              <td>Active</td>
-            </tr>
+            <% if(role == "Full-Time Caretaker"){ %>
+              <tr>
+                <td>Status:</td>
+                <td>Active</td>
+              </tr>
+            <% } %>
             <tr>
               <td>Animals:</td>
               <td>Dogs, Rabbits, Cats</td>
@@ -171,28 +173,31 @@
         </div>
       </div>
       <hr class="border-light m-0">
-      <div class="table-responsive" id="availability_table">
-        <table class="table card-table m-0">
-          <tbody>
-            <tr>
-              <th>Availability</th>
-              <th>Booked</th>
-            </tr>
-            <tr>
-              <td>01/01/2020</td>
-              <td><span class="fa fa-check"></span></td>
-            </tr>
-            <tr>
-              <td>02/01/2020</td>
-              <td><span class="fa fa-check"></span></td>
-            </tr>
-            <tr>
-              <td>03/01/2002</td>
-              <td><span class="fa fa-times text-light"></span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <% if(role == "Part-Time Caretaker"){ %>
+        <div class="table-responsive" id="availability_table">
+          <table class="table card-table m-0">
+            <tbody>
+              <tr>
+                <th>Availability</th>
+                <th>Booked</th>
+              </tr>
+              <tr>
+                <td>01/01/2020</td>
+                <td><span class="fa fa-check"></span></td>
+              </tr>
+              <tr>
+                <td>02/01/2020</td>
+                <td><span class="fa fa-check"></span></td>
+              </tr>
+              <tr>
+                <td>03/01/2002</td>
+                <td><span class="fa fa-times text-light"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+      
     </div>
 
   <h2>Bids</h2>
