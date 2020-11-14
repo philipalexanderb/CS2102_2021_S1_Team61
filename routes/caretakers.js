@@ -10,7 +10,11 @@ const pool = new Pool({
 });
 
 // Profile page
-router.get("/:username", caretakerMiddleware(), async function (req, res, next) {
+router.get("/:username", caretakerMiddleware(), async function (
+  req,
+  res,
+  next
+) {
   const username = req.params.username;
   var caretakers = await pool.query(sql_query.query.get_caretaker, [username]);
   pool.query(sql_query.query.get_user, [username], (err, data) => {

@@ -109,10 +109,10 @@
                     <%= data[i].price%>
                   </td>
                   <td>
-                    <%= data[i].s_date%>
+                    <%= data[i].s_date.getDate() + "-" + data[i].s_date.getMonth() + "-" + data[i].s_date.getFullYear()%>
                   </td>
                   <td>
-                    <%= data[i].e_date%>
+                    <%= data[i].e_date.getDay() + "-" + data[i].s_date.getMonth() + "-" + data[i].s_date.getFullYear()%>
                   </td>
                   <td>
                     <%= data[i].status%>
