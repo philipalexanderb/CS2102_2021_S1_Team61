@@ -174,28 +174,34 @@
       </div>
       <hr class="border-light m-0">
       <% if(role == "Part-Time Caretaker"){ %>
-        <div class="table-responsive" id="availability_table">
-          <table class="table card-table m-0">
-            <tbody>
-              <tr>
-                <th>Availability</th>
-                <th>Booked</th>
-              </tr>
-              <tr>
-                <td>01/01/2020</td>
-                <td><span class="fa fa-check"></span></td>
-              </tr>
-              <tr>
-                <td>02/01/2020</td>
-                <td><span class="fa fa-check"></span></td>
-              </tr>
-              <tr>
-                <td>03/01/2002</td>
-                <td><span class="fa fa-times text-light"></span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <% if (avails.length > 0) { %>
+          <div class="card mb-4">
+            <div class="table-responsive">
+              <table class="table card-table m-0">
+                <tbody>
+                  <tr>
+                    <th>Availability</th>
+                    <th>Booked</th>
+                  </tr>
+                  <% for(var i=0; i < avails.length; i++) { %>
+                  <tr>
+                    <td><%= avails[i].avail_date.toISOString().slice(0,10) %></td>
+                    <td><span class="fa fa-times text-light"></span></td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% } else { %>
+            <div class="card">
+              <div class="card-body">
+                No availability has been specified.
+              </div>
+            </div>
+            <br>
+        <% } %>
+
       <% } %>
       
     </div>

@@ -102,9 +102,10 @@ sql.query = {
     "INSERT INTO takes_leave (ctuname, s_date, e_date) SELECT $1, $2, $3 WHERE NOT EXISTS (SELECT 1 FROM bids WHERE bids.ctuname=CAST($1 AS varchar) AND bids.is_win=TRUE AND bids.s_date<=$2 AND bids.e_date>=$3);",
   
   check_fulltime:
-    "SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = $1) THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;"
+    "SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = $1) THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;",
 
-    // SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = 'a') THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;
+  get_availability: "SELECT * FROM  availability WHERE username=$1;"
+
 
   
 

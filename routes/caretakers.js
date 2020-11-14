@@ -14,6 +14,12 @@ const pool = new Pool({
 router.get("/:username", caretakerMiddleware(), function (req, res, next) {
   const username = req.params.username;
 
+  var avails = [];
+  pool.query(sql_query.query.get_availability, [username], (err, data) => {
+    console.log(data.rows);
+    avails = data.rows;
+  });
+
   pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
     pool.query(sql_query.query.get_user, [username], (err, data) => {
       if (err) {
@@ -50,7 +56,8 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
             userName: username,
             salary: salary,
             bids: bids_res.rows,
-            role: role
+            role: role,
+            avails:avails
           });
 
         });
