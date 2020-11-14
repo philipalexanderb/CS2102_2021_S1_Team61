@@ -33,25 +33,29 @@ router.post("/register", antiMiddleware(), function (req, res, next) {
     firstname,
     lastname,
   ]);
-  if (role == "petowner") {
-    pool.query(sql_query.query.add_petowner, [username]);
-  } else {
-    pool.query(sql_query.query.add_caretaker, [username]);
+  setTimeout(() => {
+    console.log("first");
+    if (role == "m") { 
+      // dont remove this yet
+    } else if (role == "petowner") {
+      pool.query(sql_query.query.add_petowner, [username]);
+    } else {
+      pool.query(sql_query.query.add_caretaker, [username]);
+    }
 
-    setTimeout(() => {
-      console.log('timeout');
-      if (role == "m") { 
-        // dont remove this yet
-      } else if (role == "full-time caretaker") {
-        pool.query(sql_query.query.add_fulltime_caretaker, [username]);
-      } else if (role == "part-time caretaker") {
-        pool.query(sql_query.query.add_parttime_caretaker, [username]);
-      }
+  }, 2000);
 
-    }, 2000);
-
+  setTimeout(() => {
+    console.log('timeout');
+    if (role == "m") { 
+      // dont remove this yet
+    } else if (role == "full-time caretaker") {
+      pool.query(sql_query.query.add_fulltime_caretaker, [username]);
+    } else if (role == "part-time caretaker") {
+      pool.query(sql_query.query.add_parttime_caretaker, [username]);
+    }
+  }, 2000); 
   
-  }
   
   res.redirect("/auth/thankyou");
 });
