@@ -22,11 +22,21 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
 
   var rating = "No rating yet."
   pool.query(sql_query.query.get_rating, [username], (err, data) => {
-    console.log(data.rows[0].avg);
+    // console.log(data.rows[0].avg);
     if (data.rows != null) {
       rating = Math.round(data.rows[0].avg, 1);
     }
   });
+
+  var pet_days = 0;
+  pool.query(sql_query.query.get_num_of_pet_days, [username], (err, data) => {
+    // console.log(data.rows[0].num_days);
+    if (data.rows != null) {
+      pet_days = data.rows[0].num_days;
+    }
+  });
+
+  
 
   pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
     pool.query(sql_query.query.get_user, [username], (err, data) => {
@@ -70,7 +80,8 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
             bids: bids_res.rows,
             role: role,
             avails:avails,
-            rating: rating
+            rating: rating,
+            pet_days: pet_days
           });
 
         });

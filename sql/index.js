@@ -106,9 +106,8 @@ sql.query = {
 
   get_availability: "SELECT * FROM  availability WHERE username=$1;",
 
-  get_rating:"SELECT AVG(rating) FROM bids WHERE is_win = true AND ctuname=$1;"
+  get_rating:"SELECT AVG(rating) FROM bids WHERE is_win = true AND ctuname=$1;",
 
-  // INSERT INTO bids (pouname, name, ctuname, s_date, e_date, is_win, rating) VALUES ('alice', 'tom', 'ff', '2021-05-23', '2021-05-25', true, 5);
 
   
 
