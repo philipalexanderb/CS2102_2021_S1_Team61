@@ -136,10 +136,10 @@ INSERT INTO animals (a_type) VALUES ('cat');
 INSERT INTO animals (a_type) VALUES ('dog');
 INSERT INTO animals (a_type) VALUES ('mouse');
 
-INSERT INTO pets (username, name, a_type) VALUES ('alice', 'tom', 'cat', 'eat');
-INSERT INTO pets (username, name, a_type) VALUES ('alice', 'jerry', 'mouse', 'sleep');
-INSERT INTO pets (username, name, a_type) VALUES ('max', 'mickey', 'cat', 'drink');
-INSERT INTO pets (username, name, a_type) VALUES ('max', 'garfield', 'cat', 'poo');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('alice', 'tom', 'cat', 'eat');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('alice', 'jerry', 'mouse', 'sleep');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('max', 'mickey', 'cat', 'drink');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('max', 'garfield', 'cat', 'poo');
 
 
 
