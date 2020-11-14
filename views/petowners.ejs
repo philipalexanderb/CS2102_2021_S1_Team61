@@ -25,7 +25,13 @@
           <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/petowners/<%= username %>">Profile</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/history">History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/browse">Browse</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/auth/logout">Logout</a>
@@ -52,10 +58,10 @@
       <div class="card-body">
         <table class="table user-view-table m-0">
           <tbody>
-            <tr>
+            <!-- <tr>
               <td>Registered:</td>
               <td>25/11/2019</td>
-            </tr>
+            </tr> -->
             <tr>
               <td>Username:</td>
               <td><%= username %></td>
@@ -64,10 +70,10 @@
               <td>Role:</td>
               <td>Pet Owner</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>Address:</td>
               <td>15 Hawthorn Lane</td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
       </div>
