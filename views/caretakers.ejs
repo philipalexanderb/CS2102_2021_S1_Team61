@@ -255,6 +255,37 @@
   <br>
   <% } %>
 
+  <h2>Your Reviews</h2>
+  <% if (reviews.length > 0) { %>
+  <div class="card mb-4">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Review</th>
+            <th>Rating</th>
+          </tr>
+          <% for(var i=0; i < reviews.length; i++) { %>
+          <tr>
+            <td><%= reviews[i].first_name %> <%= reviews[i].last_name %></td>
+            <td><%= reviews[i].review %></td>
+            <td><%= reviews[i].rating %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-body">
+      There are no reviews.
+    </div>
+  </div>
+  <br>
+  <% } %>
+
   </div>
 
 
