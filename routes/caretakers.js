@@ -210,6 +210,32 @@ router.get("/:username/apply_for_leave", caretakerMiddleware(), async function (
   });
 });
 
+// Add availability
+router.get("/:username/add_availability", caretakerMiddleware(), async function (
+  req,
+  res,
+  next
+) {
+  const username = req.params.username;
+  var caretakers = await pool.query(sql_query.query.get_caretaker, [username]);
+  pool.query(sql_query.query.get_user, [username], (err, data) => {
+    if (err) {
+      res.render("error", err);
+    } else if (data.rows.length == 0) {
+      res.send("User does not exist");
+    } else {
+      const firstName = data.rows[0].first_name;
+      const lastName = data.rows[0].last_name;
+
+      res.render("add_availability", {
+        firstName: firstName,
+        lastName: lastName,
+        userName: username,
+      });
+    }
+  });
+});
+
 router.post("/:username/apply_for_leave", function (req, res, next) {
   // console.log(req);
   const username = req.params.username;
