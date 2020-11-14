@@ -20,6 +20,14 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
     avails = data.rows;
   });
 
+  var rating = "No rating yet."
+  pool.query(sql_query.query.get_rating, [username], (err, data) => {
+    console.log(data.rows[0].avg);
+    if (data.rows != null) {
+      rating = Math.round(data.rows[0].avg, 1);
+    }
+  });
+
   pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
     pool.query(sql_query.query.get_user, [username], (err, data) => {
       if (err) {
@@ -57,7 +65,8 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
             salary: salary,
             bids: bids_res.rows,
             role: role,
-            avails:avails
+            avails:avails,
+            rating: rating
           });
 
         });

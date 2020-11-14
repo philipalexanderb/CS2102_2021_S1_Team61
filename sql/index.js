@@ -104,8 +104,11 @@ sql.query = {
   check_fulltime:
     "SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = $1) THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;",
 
-  get_availability: "SELECT * FROM  availability WHERE username=$1;"
+  get_availability: "SELECT * FROM  availability WHERE username=$1;",
 
+  get_rating:"SELECT AVG(rating) FROM bids WHERE is_win = true AND ctuname=$1;"
+
+  // INSERT INTO bids (pouname, name, ctuname, s_date, e_date, is_win, rating) VALUES ('alice', 'tom', 'ff', '2021-05-23', '2021-05-25', true, 5);
 
   
 
