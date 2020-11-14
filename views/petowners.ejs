@@ -45,8 +45,6 @@
         <a href="/add_pet" class="btn btn-primary btn-md">Add pet</a>&nbsp;
         <a href="/history" class="btn btn-primary btn-md">History</a>&nbsp;
         <a href="/auth/logout" class="btn btn-primary btn-md">Logout</a>&nbsp;
-        <a href=<%= "/pets/"+username+"/test_petname" %> class="btn btn-default btn-md">Go to pets page (remove
-          later)</a>&nbsp;
       </div>
     </div>
 
@@ -75,33 +73,51 @@
       </div>
     </div>
 
+    <h2>Successful Bids</h2>
+    <% if (pets.length > 0) { %>
     <div class="card mb-4">
       <div class="table-responsive">
         <table class="table card-table m-0">
           <tbody>
             <tr>
-              <th></th>
-              <th>Status</th>
+              <th>Caretaker</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Pet Name</th>
+              <th>Bid Amount</th>
+              <th>Add review</th>
             </tr>
+            <% for(var i=0; i < successful_bids.length; i++) { %>
             <tr>
-              <td>Lucie Rodgers (01/01/2020)</td>
-              <td>Accepted</td>
+              <td><%= successful_bids[i].first_name %> <%= successful_bids[i].last_name %></td>
+              <td><%= successful_bids[i].s_date.toISOString().slice(0,10) %></td>
+              <td><%= successful_bids[i].e_date.toISOString().slice(0,10) %></td>
+              <td><%= successful_bids[i].name %></td>
+              <td><%= successful_bids[i].price %></td>
+              <% if (curr_date > successful_bids[i].e_date) { %>
+              <td>
+                <a href="/bid/review/<%= successful_bids[i].first_name %>/<%= successful_bids[i].last_name %>/<%= successful_bids[i].s_date.toISOString().slice(0,10) %>/<%= successful_bids[i].e_date.toISOString().slice(0,10) %>/<%= successful_bids[i].name %>/<%= successful_bids[i].ctuname %>"
+                  class="open-button">Review</a>
+              </td>
+              <% } else { %>
+                <td> Not available </td>
+              <% } %>  
             </tr>
-            <tr>
-              <td>Mohsin Weeks (02/01/2020-05/01/2020)</td>
-              <td>Pending</td>
-            </tr>
-            <tr>
-              <td>Bailey Bevan (03/01/2002)</td>
-              <td>Rejected</td>
-            </tr>
+            <% } %>
           </tbody>
         </table>
       </div>
     </div>
+    <% } else { %>
+    <div class="card">
+      <div class="card-body">
+        You have no successful bids.
+      </div>
+    </div>
+    <br>
+    <% } %>
 
     <h2>Pets</h2>
-
     <% if (pets.length > 0) { %>
     <div class="card mb-4">
       <div class="table-responsive">
@@ -115,8 +131,8 @@
             <% for(var i=0; i < pets.length; i++) { %>
             <tr>
               <td><%= pets[i].name %></td>
-              <td><%= pets[i].animal_type %></td>
-              <td><%= pets[i].special_requirement %></td>
+              <td><%= pets[i].a_type %></td>
+              <td><%= pets[i].sp_req %></td> <!-- special requirement-->
             </tr>
             <% } %>
           </tbody>
@@ -129,10 +145,9 @@
         You have no pets.
       </div>
     </div>
+    <br>
     <% } %>
 
-
-    <a href="/browse" class="btn btn-primary btn-sm">Place Bid</a>&nbsp;
 
   </div>
   <!-- JQuery, Popper, JS Plugins -->

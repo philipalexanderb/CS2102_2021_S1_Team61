@@ -48,6 +48,7 @@ CREATE TABLE pets(
                          ON DELETE cascade,
     name varchar(64),
     a_type varchar(64) REFERENCES animals(a_type),
+    sp_req varchar(256),
     PRIMARY KEY(username, name)
 );
 
@@ -135,10 +136,10 @@ INSERT INTO animals (a_type) VALUES ('cat');
 INSERT INTO animals (a_type) VALUES ('dog');
 INSERT INTO animals (a_type) VALUES ('mouse');
 
-INSERT INTO pets (username, name, a_type) VALUES ('alice', 'tom', 'cat');
-INSERT INTO pets (username, name, a_type) VALUES ('alice', 'jerry', 'mouse');
-INSERT INTO pets (username, name, a_type) VALUES ('max', 'mickey', 'cat');
-INSERT INTO pets (username, name, a_type) VALUES ('max', 'garfield', 'cat');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('alice', 'tom', 'cat', 'likes fish');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('alice', 'jerry', 'mouse', 'likes cheez');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('max', 'mickey', 'cat', 'needs toy');
+INSERT INTO pets (username, name, a_type, sp_req) VALUES ('max', 'garfield', 'cat', 'needs snack');
 
 
 
@@ -243,7 +244,7 @@ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION remove_availability()
 RETURNS trigger AS
-$t$ BEGIN IF new.num_of_pets IN (SELECT max_pets FROM caretaker c  WHERE c.username = new.username) THEN  DELETE FROM availability WHERE availability.avail_date = new.avail_date AND availability.username = new.username; END IF; RETURN NULL; END; $t$
+$t$ BEGIN IF new.num_of_pets IN (SELECT max_pets FROM caretakers c WHERE c.username = new.username) THEN DELETE FROM availability WHERE availability.avail_date = new.avail_date AND availability.username = new.username; END IF; RETURN NULL; END; $t$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER is_full

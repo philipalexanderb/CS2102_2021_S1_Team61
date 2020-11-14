@@ -6,6 +6,8 @@ sql.query = {
     "INSERT INTO users (username, password, first_name, last_name) VALUES ($1,$2,$3,$4)",
   add_petowner: "INSERT INTO petowners (username) VALUES ($1)",
   add_caretaker: "INSERT INTO caretakers (username) VALUES ($1)",
+  add_fulltime_caretaker: "INSERT INTO fulltime (username) VALUES ($1)",
+  add_parttime_caretaker: "INSERT INTO parttime (username) VALUES ($1)",
   add_admin: "INSERT INTO admin (username) VALUES ($1)",
   // login
   get_user: "SELECT * FROM users WHERE username=$1",
@@ -32,9 +34,24 @@ sql.query = {
   // admin
   get_admin: "SELECT * FROM admin WHERE username=$1",
 
-  // register
+  // bids
+  get_review:
+    "SELECT first_name, last_name, review, rating FROM bids JOIN users ON users.username = bids.pouname WHERE ctuname=$1 AND (review IS NOT NULL OR rating IS NOT NULL)",
+  add_review:
+    "UPDATE bids SET rating=$6, review=$7 WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5",
+  get_successful_bid:
+    "SELECT * FROM bids JOIN users ON bids.ctuname = users.username WHERE pouname=$1 AND is_win = TRUE",
+  add_bid_date:
+    "INSERT INTO bid_dates (s_date, e_date) VALUES ($1,$2) ON CONFLICT DO NOTHING",
   add_bid:
     "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6)",
+  get_bid:
+    "SELECT * FROM bids NATURAL JOIN pets NATURAL JOIN petowners NATURAL JOIN users WHERE ctuname=$1 AND is_win = FALSE",
+
+  update_bid:
+    "UPDATE bids SET is_win = TRUE WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5 AND bids.price=$6",
+  // update_bid:
+  //   "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT(pouname, ctuname, name, s_date, e_date) DO UPDATE SET is_win = TRUE WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5",
 
   // admin queries
   get_num_of_pets_within_month:
@@ -80,6 +97,17 @@ sql.query = {
 
   get_petowner_history:
     "SELECT *, CASE WHEN is_win=TRUE then 'ACCEPTED' WHEN is_win=FALSE AND s_date > now() THEN 'PENDING' ELSE 'REJECTED' END AS status FROM bids WHERE pouname = $1",
+
+  apply_for_leave:
+    "INSERT INTO takes_leave (ctuname, s_date, e_date) SELECT $1, $2, $3 WHERE NOT EXISTS (SELECT 1 FROM bids WHERE bids.ctuname=CAST($1 AS varchar) AND bids.is_win=TRUE AND bids.s_date<=$2 AND bids.e_date>=$3);",
+  
+  check_fulltime:
+    "SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = $1) THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;"
+
+    // SELECT CASE WHEN EXISTS (SELECT 1 FROM fulltime WHERE username = 'a') THEN CAST(1 AS BOOL) ELSE CAST(0 AS BOOL) END AS IS_FULLTIME;
+
+  
+
 };
 
 module.exports = sql;
