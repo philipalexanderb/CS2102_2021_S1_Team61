@@ -8,6 +8,12 @@ h1{
 	color: #2B594E;
 }
 
+.h1 {
+	padding-bottom: 20px;
+	font-size: large;
+	color: #2B594E;
+}
+
 .top-word h1{
 	padding-top: 20px;
 	color: #2B594E;
@@ -22,6 +28,29 @@ h1{
 .btn-light {
 	color: #2B594E;
 }
+
+
+.text-xlarge {
+	font-size: 170% !important;
+	color: #E17A6C;
+	margin-bottom: 15px;
+}
+
+  .btn-primary {
+	margin-top: 25px;
+	background-color: #e9bbb5;
+	border-color: #e9bbb5;
+  }
+
+  .btn-default {
+	border-color: #e9bbb5;
+  }
+
+  .btn-primary:hover {
+	background-color: #E17A6C;
+	border-color: #E17A6C;
+  }
+
 
 .dropdown-menu {
 	background-color: #A9D9CD;

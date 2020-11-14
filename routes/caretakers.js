@@ -35,8 +35,11 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
         pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
           role = "Part-Time Caretaker";
           console.log(fulltime_data.rows[0].is_fulltime);
-          
-          if (fulltime_data.rows[0].is_fulltime) {role = "Full-Time Caretaker"};
+
+          if (fulltime_data.rows[0].is_fulltime) {
+            role = "Full-Time Caretaker";
+            // document.getElementById("availability_table").style.visibility="hidden";
+          };
 
           res.render("caretakers", {
             firstName: firstName,
