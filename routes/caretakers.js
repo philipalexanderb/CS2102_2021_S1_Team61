@@ -37,7 +37,11 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
       } else {
         const firstName = data.rows[0].first_name;
         const lastName = data.rows[0].last_name;
-        const salary = data.rows[0].salary;
+        var salary = data.rows[0].salary;
+        console.log("salary:" + salary);
+        if ((typeof(salary) != "undefined") || salary == null) {
+          salary = 0;
+        }
 
         var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
         for (var i = 0; i < bids_res.rows.length; i++) {
