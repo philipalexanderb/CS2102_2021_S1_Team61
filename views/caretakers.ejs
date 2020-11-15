@@ -209,6 +209,20 @@
   <h2>Bids</h2>
   <% if (bids.length > 0) { %>
   <div class="card mb-4">
+    <div class="dropdown">
+      <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+      </button> -->
+      <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
+        <a class="dropdown-item" href="/caretakers/<%= userName %>/pouname">Pet Owners</a>
+        <a class="dropdown-item" href="/caretakers/<%= userName %>/a_type">Animal type</a>
+        <form class="form-container" action="/caretakers/<%= userName %>/price"  method="get" id = "form">
+            <label for="bid amount">Price</label>
+            <input type="text" id="amount" placeholder="Bid amount" required="required" name="amount">
+            <button type="submit" form = "form" class="open-button" value="Submit">Search bid</button>
+        </form>
+      <!-- </div> -->
+    </div>
     <div class="table-responsive">
       <table class="table card-table m-0">
         <tbody>
@@ -222,7 +236,7 @@
           </tr>
           <% for(var i=0; i < bids.length; i++) { %>
           <tr>
-            <td><%= bids[i].pouname %></td>
+            <td><%= bids[i].first_name %></td>
             <td><%= bids[i].name %></td>
             <td><%= bids[i].s_date.toISOString().slice(0,10) %></td>
             <td><%= bids[i].e_date.toISOString().slice(0,10) %></td>
@@ -230,8 +244,6 @@
             <td>
               <a href="/caretakers/<%= userName %>/accept/<%= bids[i].s_date.toISOString().slice(0,10) %>/<%= bids[i].e_date.toISOString().slice(0,10) %>/<%= bids[i].pouname %>/<%= bids[i].name %>/<%= bids[i].price %>"
                 class="btn_accept">Accept</a>
-              <!-- <a href="/caretakers/<%= userName %>/reject/<%= bids[i].s_date %>/<%= bids[i].e_date %>/<%= bids[i].pouname %>/<%= bids[i].name %>"
-                class="btn_reject">Reject</a> -->
             </td>
           </tr>
           <% } %>
@@ -243,6 +255,38 @@
   <div class="card">
     <div class="card-body">
       There are no bids.
+    </div>
+  </div>
+  <br>
+  <% } %>
+
+
+  <h2>Your Reviews</h2>
+  <% if (reviews.length > 0) { %>
+  <div class="card mb-4">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Review</th>
+            <th>Rating</th>
+          </tr>
+          <% for(var i=0; i < reviews.length; i++) { %>
+          <tr>
+            <td><%= reviews[i].first_name %> <%= reviews[i].last_name %></td>
+            <td><%= reviews[i].review %></td>
+            <td><%= reviews[i].rating %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-body">
+      There are no reviews.
     </div>
   </div>
   <br>

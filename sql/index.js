@@ -46,7 +46,10 @@ sql.query = {
   add_bid:
     "INSERT INTO bids (pouname, ctuname, name, s_date, e_date, price) VALUES ($1,$2,$3,$4,$5,$6)",
   get_bid:
-    "SELECT * FROM bids NATURAL JOIN pets NATURAL JOIN petowners NATURAL JOIN users WHERE ctuname=$1 AND is_win = FALSE",
+    "SELECT * FROM bids NATURAL JOIN pets NATURAL JOIN petowners JOIN users ON bids.pouname = users.username WHERE ctuname=$1 AND is_win = FALSE",
+  
+  caretaker_get_max:
+    "SELECT * FROM get_max_by($1) AS g JOIN bids ON bids.ctuname = g.ctuname JOIN users ON users.username = bids.pouname WHERE g.ctuname=$2 AND g.max_amount = bids.price",
 
   update_bid:
     "UPDATE bids SET is_win = TRUE WHERE bids.pouname=$1 AND bids.ctuname=$2 AND bids.name=$3 AND bids.s_date=$4 AND bids.e_date=$5 AND bids.price=$6",

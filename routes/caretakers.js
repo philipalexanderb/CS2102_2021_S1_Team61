@@ -37,57 +37,59 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
   });
 
   
+  pool.query(sql_query.query.get_review, [username], (err, data1) => {
+    pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
+      pool.query(sql_query.query.get_user, [username], (err, data) => {
+        if (err) {
+          res.render("error", err);
+        } else if (data.rows.length == 0) {
+          res.send("User does not exist");
+        } else {
+          const firstName = data.rows[0].first_name;
+          const lastName = data.rows[0].last_name;
+          var salary = data.rows[0].salary;
+          console.log("salary:" + salary);
+          if ((typeof(salary) != "undefined") || salary == null) {
+            salary = 0;
+          }
 
-  pool.query(sql_query.query.get_bid, [username], (err, bids_res) => {
-    pool.query(sql_query.query.get_user, [username], (err, data) => {
-      if (err) {
-        res.render("error", err);
-      } else if (data.rows.length == 0) {
-        res.send("User does not exist");
-      } else {
-        const firstName = data.rows[0].first_name;
-        const lastName = data.rows[0].last_name;
-        var salary = data.rows[0].salary;
-        console.log("salary:" + salary);
-        if ((typeof(salary) != "undefined") || salary == null) {
-          salary = 0;
-        }
+          var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+          for (var i = 0; i < bids_res.rows.length; i++) {
+            bids_res.rows[i].s_date = new Date(
+              bids_res.rows[i].s_date - tzoffset
+            );
+            bids_res.rows[i].e_date = new Date(
+              bids_res.rows[i].e_date - tzoffset
+            );
+          }
 
-        var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-        for (var i = 0; i < bids_res.rows.length; i++) {
-          bids_res.rows[i].s_date = new Date(
-            bids_res.rows[i].s_date - tzoffset
-          );
-          bids_res.rows[i].e_date = new Date(
-            bids_res.rows[i].e_date - tzoffset
-          );
-        }
+          pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
+            role = "Part-Time Caretaker";
+            console.log(fulltime_data.rows[0].is_fulltime);
 
-        pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
-          role = "Part-Time Caretaker";
-          console.log(fulltime_data.rows[0].is_fulltime);
+            if (fulltime_data.rows[0].is_fulltime) {
+              role = "Full-Time Caretaker";
+              // document.getElementById("availability_table").style.visibility="hidden";
+            };
 
-          if (fulltime_data.rows[0].is_fulltime) {
-            role = "Full-Time Caretaker";
-            // document.getElementById("availability_table").style.visibility="hidden";
-          };
+            res.render("caretakers", {
+              firstName: firstName,
+              lastName: lastName,
+              userName: username,
+              salary: salary,
+              bids: bids_res.rows,
+              role: role,
+              avails:avails,
+              rating: rating,
+              pet_days: pet_days,
+              reviews: data1.rows
+            });
 
-          res.render("caretakers", {
-            firstName: firstName,
-            lastName: lastName,
-            userName: username,
-            salary: salary,
-            bids: bids_res.rows,
-            role: role,
-            avails:avails,
-            rating: rating,
-            pet_days: pet_days
           });
 
-        });
-
-        
-      }
+          
+        }
+      });
     });
   });
 });
@@ -228,6 +230,101 @@ router.post("/:username/apply_for_leave", function (req, res, next) {
     }
   );
   return res.redirect("/caretakers/" + pousername);
+});
+
+// Profile page
+router.get("/:username/:filter_cat", caretakerMiddleware(), function (req, res, next) {
+  const username = req.params.username;
+  var filter_cat = req.params.filter_cat;
+  console.log("######################### Filter is here ############################");
+  console.log(filter_cat);
+  if (filter_cat === "price") {
+    filter_cat = req.body.amount;
+    console.log("######################AMOUTN##################");
+    console.log(req.body.amount);
+  } else if (filter_cat === "a_type") {
+    filter_cat = "animal type";
+  }
+
+  var avails = [];
+  pool.query(sql_query.query.get_availability, [username], (err, data) => {
+    console.log(data.rows);
+    avails = data.rows;
+  });
+
+  var rating = "No rating yet."
+  pool.query(sql_query.query.get_rating, [username], (err, data) => {
+    // console.log(data.rows[0].avg);
+    if (data.rows != null) {
+      rating = Math.round(data.rows[0].avg, 1);
+    }
+  });
+
+  var pet_days = 0;
+  pool.query(sql_query.query.get_num_of_pet_days, [username], (err, data) => {
+    // console.log(data.rows[0].num_days);
+    if (data.rows != null) {
+      pet_days = data.rows[0].num_days;
+    }
+  });
+
+  pool.query(sql_query.query.get_review, [username], (err, data1) => {
+    pool.query(sql_query.query.caretaker_get_max, [filter_cat, username], (err, bids_res) => {
+      pool.query(sql_query.query.get_user, [username], (err, data) => {
+        if (err) {
+          res.render("error", err);
+        } else if (data.rows.length == 0) {
+          res.send("User does not exist");
+        } else {
+          const firstName = data.rows[0].first_name;
+          const lastName = data.rows[0].last_name;
+          var salary = data.rows[0].salary;
+          console.log("salary:" + salary);
+          if ((typeof(salary) != "undefined") || salary == null) {
+            salary = 0;
+          }
+
+          var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+          for (var i = 0; i < bids_res.rows.length; i++) {
+            bids_res.rows[i].s_date = new Date(
+              bids_res.rows[i].s_date - tzoffset
+            );
+            bids_res.rows[i].e_date = new Date(
+              bids_res.rows[i].e_date - tzoffset
+            );
+          }
+
+          pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
+            role = "Part-Time Caretaker";
+            console.log(fulltime_data.rows[0].is_fulltime);
+
+            if (fulltime_data.rows[0].is_fulltime) {
+              role = "Full-Time Caretaker";
+              // document.getElementById("availability_table").style.visibility="hidden";
+            };
+
+            res.render("caretakers", {
+              firstName: firstName,
+              lastName: lastName,
+              userName: username,
+              salary: salary,
+              bids: bids_res.rows,
+              role: role,
+              avails:avails,
+              rating: rating,
+              pet_days: pet_days,
+              reviews: data1.rows
+            });
+            console.log("######################## reviews ################");
+            console.log(data1.rows);
+
+          });
+
+          
+        }
+      });
+    });
+  });
 });
 
 module.exports = router;

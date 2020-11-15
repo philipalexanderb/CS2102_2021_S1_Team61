@@ -294,3 +294,12 @@ RETURN NEW;
 END;
 $$
 LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_max_by(cat varchar(64))
+RETURNS TABLE (ctuname VARCHAR(64), start_date DATE, end_date DATE, max_amount NUMERIC) AS
+$$ BEGIN 
+IF cat = 'pouname' THEN RETURN QUERY(SELECT bids.ctuname, s_date, e_date, MAX(price) FROM bids JOIN users ON bids.pouname = users.username GROUP BY s_date, e_date, bids.ctuname); 
+ELSIF cat = 'animal type' THEN RETURN QUERY (SELECT bids.ctuname, s_date, e_date, MAX(price) FROM bids NATURAL JOIN pets JOIN users ON bids.pouname = users.username GROUP BY pets.a_type, s_date, e_date, bids.ctuname); 
+ELSE RETURN QUERY(SELECT bids.ctuname, s_date, e_date, MAX(price) FROM bids JOIN users ON bids.pouname = users.username WHERE bids.price >= CAST(cat AS NUMERIC) GROUP BY s_date, e_date, bids.ctuname); 
+END IF; END; $$
+LANGUAGE plpgsql;
