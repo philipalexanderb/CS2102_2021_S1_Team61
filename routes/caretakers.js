@@ -5,6 +5,7 @@ const caretakerMiddleware = require("../auth/caremiddle");
 const { Pool } = require("pg");
 const parse = require("postgres-date");
 
+
 // Connect to database
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
