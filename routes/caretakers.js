@@ -5,6 +5,7 @@ const caretakerMiddleware = require("../auth/caremiddle");
 const { Pool } = require("pg");
 const parse = require("postgres-date");
 
+
 // Connect to database
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -17,20 +18,8 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
   var avails = [];
   pool.query(sql_query.query.get_availability, [username], (err, data) => {
     console.log(data.rows);
-    var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-    for (var i = 0; i < data.rows.length; i++) {
-      data.rows[i].s_date = new Date(
-        data.rows[i].s_date - tzoffset
-      );
-      data.rows[i].e_date = new Date(
-        data.rows[i].e_date - tzoffset
-      );
-    }
-    console.log(data.rows);
     avails = data.rows;
   });
-
-
 
   var rating = "No rating yet."
   pool.query(sql_query.query.get_rating, [username], (err, data) => {
@@ -76,43 +65,28 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
           }
 
           
-
+          
           pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
-            pool.query(sql_query.query.get_availability, [username], (err, avail_data) => {
-              console.log(data.rows);
-              var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-              for (var i = 0; i < avail_data.rows.length; i++) {
-                avail_data.rows[i].s_date = new Date(
-                  avail_data.rows[i].s_date - tzoffset
-                );
-                avail_data.rows[i].e_date = new Date(
-                  avail_data.rows[i].e_date - tzoffset
-                );
-              }
-              console.log(avail_data.rows);
+            role = "Part-Time Caretaker";
+            console.log(fulltime_data.rows[0].is_fulltime);
 
-              role = "Part-Time Caretaker";
-              console.log(fulltime_data.rows[0].is_fulltime);
+            if (fulltime_data.rows[0].is_fulltime) {
+              role = "Full-Time Caretaker";
+              // document.getElementById("availability_table").style.visibility="hidden";
+            };
 
-              if (fulltime_data.rows[0].is_fulltime) {
-                role = "Full-Time Caretaker";
-                // document.getElementById("availability_table").style.visibility="hidden";
-              };
-
-              res.render("caretakers", {
-                firstName: firstName,
-                lastName: lastName,
-                userName: username,
-                salary: salary,
-                bids: bids_res.rows,
-                role: role,
-                avails:avail_data.rows,
-                rating: rating,
-                pet_days: pet_days,
-                reviews: data1.rows
-              });
+            res.render("caretakers", {
+              firstName: firstName,
+              lastName: lastName,
+              userName: username,
+              salary: salary,
+              bids: bids_res.rows,
+              role: role,
+              avails:avails,
+              rating: rating,
+              pet_days: pet_days,
+              reviews: data1.rows
             });
-            
 
           });
 
@@ -239,32 +213,6 @@ router.get("/:username/apply_for_leave", caretakerMiddleware(), async function (
   });
 });
 
-// Add availability
-router.get("/:username/add_availability", caretakerMiddleware(), async function (
-  req,
-  res,
-  next
-) {
-  const username = req.params.username;
-  var caretakers = await pool.query(sql_query.query.get_caretaker, [username]);
-  pool.query(sql_query.query.get_user, [username], (err, data) => {
-    if (err) {
-      res.render("error", err);
-    } else if (data.rows.length == 0) {
-      res.send("User does not exist");
-    } else {
-      const firstName = data.rows[0].first_name;
-      const lastName = data.rows[0].last_name;
-
-      res.render("add_availability", {
-        firstName: firstName,
-        lastName: lastName,
-        userName: username,
-      });
-    }
-  });
-});
-
 router.post("/:username/apply_for_leave", function (req, res, next) {
   // console.log(req);
   const username = req.params.username;
@@ -285,6 +233,105 @@ router.post("/:username/apply_for_leave", function (req, res, next) {
     }
   );
   return res.redirect("/caretakers/" + pousername);
+});
+
+var url = require('url');
+
+// Profile page
+router.get("/:username/:filter_cat", caretakerMiddleware(), function (req, res, next) {
+  const username = req.params.username;
+  var filter_cat = req.params.filter_cat;
+  console.log("######################### Filter is here ############################");
+  console.log(filter_cat);
+  if (filter_cat === "price") {
+    console.log("######################AMOUNT##################");
+    path = url.parse(req.url, true);
+    var amount = path.query.amount;
+    filter_cat = amount;
+    console.log(amount);
+  } else if (filter_cat === "a_type") {
+    filter_cat = "animal type";
+  }
+
+  var avails = [];
+  pool.query(sql_query.query.get_availability, [username], (err, data) => {
+    console.log(data.rows);
+    avails = data.rows;
+  });
+
+  var rating = "No rating yet."
+  pool.query(sql_query.query.get_rating, [username], (err, data) => {
+    // console.log(data.rows[0].avg);
+    if (data.rows != null) {
+      rating = Math.round(data.rows[0].avg, 1);
+    }
+  });
+
+  var pet_days = 0;
+  pool.query(sql_query.query.get_num_of_pet_days, [username], (err, data) => {
+    // console.log(data.rows[0].num_days);
+    if (data.rows != null) {
+      pet_days = data.rows[0].num_days;
+    }
+  });
+
+  pool.query(sql_query.query.get_review, [username], (err, data1) => {
+    pool.query(sql_query.query.caretaker_get_max, [filter_cat, username], (err, bids_res) => {
+      pool.query(sql_query.query.get_user, [username], (err, data) => {
+        if (err) {
+          res.render("error", err);
+        } else if (data.rows.length == 0) {
+          res.send("User does not exist");
+        } else {
+          const firstName = data.rows[0].first_name;
+          const lastName = data.rows[0].last_name;
+          var salary = data.rows[0].salary;
+          console.log("salary:" + salary);
+          if ((typeof(salary) != "undefined") || salary == null) {
+            salary = 0;
+          }
+
+          var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+          for (var i = 0; i < bids_res.rows.length; i++) {
+            bids_res.rows[i].s_date = new Date(
+              bids_res.rows[i].s_date - tzoffset
+            );
+            bids_res.rows[i].e_date = new Date(
+              bids_res.rows[i].e_date - tzoffset
+            );
+          }
+
+          pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
+            role = "Part-Time Caretaker";
+            console.log(fulltime_data.rows[0].is_fulltime);
+
+            if (fulltime_data.rows[0].is_fulltime) {
+              role = "Full-Time Caretaker";
+              // document.getElementById("availability_table").style.visibility="hidden";
+            };
+
+            res.render("caretakers", {
+              firstName: firstName,
+              lastName: lastName,
+              userName: username,
+              salary: salary,
+              bids: bids_res.rows,
+              role: role,
+              avails:avails,
+              rating: rating,
+              pet_days: pet_days,
+              reviews: data1.rows
+            });
+            console.log("######################## reviews ################");
+            console.log(data1.rows);
+
+          });
+
+          
+        }
+      });
+    });
+  });
 });
 
 module.exports = router;
