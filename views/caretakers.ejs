@@ -6,6 +6,10 @@
   <title>Caretaker Profile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ 
   <style type="text/css">
     body {
       margin-top: 0px;
@@ -210,10 +214,10 @@
   <% if (bids.length > 0) { %>
   <div class="card mb-4">
     <div class="dropdown">
-      <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Dropdown button
-      </button> -->
-      <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="/caretakers/<%= userName %>/pouname">Pet Owners</a>
         <a class="dropdown-item" href="/caretakers/<%= userName %>/a_type">Animal type</a>
         <form class="form-container" action="/caretakers/<%= userName %>/price"  method="get" id = "form">
@@ -221,7 +225,7 @@
             <input type="text" id="amount" placeholder="Bid amount" required="required" name="amount">
             <button type="submit" form = "form" class="open-button" value="Submit">Search bid</button>
         </form>
-      <!-- </div> -->
+      </div>
     </div>
     <div class="table-responsive">
       <table class="table card-table m-0">

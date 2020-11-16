@@ -63,6 +63,8 @@ router.get("/:username", caretakerMiddleware(), function (req, res, next) {
             );
           }
 
+          
+          
           pool.query(sql_query.query.check_fulltime, [username], (err, fulltime_data) => {
             role = "Part-Time Caretaker";
             console.log(fulltime_data.rows[0].is_fulltime);
@@ -232,6 +234,8 @@ router.post("/:username/apply_for_leave", function (req, res, next) {
   return res.redirect("/caretakers/" + pousername);
 });
 
+var url = require('url');
+
 // Profile page
 router.get("/:username/:filter_cat", caretakerMiddleware(), function (req, res, next) {
   const username = req.params.username;
@@ -239,9 +243,11 @@ router.get("/:username/:filter_cat", caretakerMiddleware(), function (req, res, 
   console.log("######################### Filter is here ############################");
   console.log(filter_cat);
   if (filter_cat === "price") {
-    filter_cat = req.body.amount;
-    console.log("######################AMOUTN##################");
-    console.log(req.body.amount);
+    console.log("######################AMOUNT##################");
+    path = url.parse(req.url, true);
+    var amount = path.query.amount;
+    filter_cat = amount;
+    console.log(amount);
   } else if (filter_cat === "a_type") {
     filter_cat = "animal type";
   }
